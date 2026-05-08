@@ -13,7 +13,10 @@ DataStore& DataStore::instance() {
     return inst;
 }
 
-std::string DataStore::dbFilePath() {
+std::string DataStore::dbFilePath() const {
+#ifdef SEMI_TEST
+    if (!testDbPath_.empty()) return testDbPath_;
+#endif
     char buf[MAX_PATH] = {};
     GetModuleFileNameA(nullptr, buf, MAX_PATH);
     std::string exe(buf);
@@ -30,7 +33,7 @@ static void ensureDbDir(const std::string& filePath) {
 
 void DataStore::load() {
 #ifdef SEMI_TEST
-    return;  // 테스트 중에는 파일 로드 생략
+    if (testDbPath_.empty()) return;  // 테스트 경로 미설정 시 파일 로드 생략
 #endif
     std::lock_guard<std::mutex> lock(mutex_);
     std::ifstream ifs(dbFilePath());
@@ -76,7 +79,7 @@ void DataStore::load() {
 
 void DataStore::saveUnlocked() const {
 #ifdef SEMI_TEST
-    return;  // 테스트 중에는 파일 I/O 생략
+    if (testDbPath_.empty()) return;  // 테스트 경로 미설정 시 파일 I/O 생략
 #endif
     json j;
 

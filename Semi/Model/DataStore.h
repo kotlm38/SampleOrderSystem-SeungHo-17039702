@@ -38,6 +38,14 @@ public:
         samples_.clear();
         orders_.clear();
         jobs_.clear();
+        testDbPath_.clear();
+    }
+    void setDbPathForTest(const std::string& path) {
+        testDbPath_ = path;
+    }
+    // Exposes dbFilePath() for coverage testing
+    std::string getDbFilePathForTest() {
+        return dbFilePath();
     }
 #endif
 
@@ -47,10 +55,13 @@ private:
     DataStore& operator=(const DataStore&) = delete;
 
     void saveUnlocked() const;
-    static std::string dbFilePath();
+    std::string dbFilePath() const;
 
     mutable std::mutex          mutex_;
     std::vector<Sample>         samples_;
     std::vector<Order>          orders_;
     std::vector<ProductionJob>  jobs_;
+#ifdef SEMI_TEST
+    std::string                 testDbPath_;
+#endif
 };

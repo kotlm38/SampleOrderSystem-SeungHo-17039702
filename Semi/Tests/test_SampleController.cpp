@@ -105,3 +105,42 @@ TEST_F(SampleControllerTest, SearchById_PartialMatch) {
     auto result = ctrl_.search(SampleSearchField::Id, "S00");
     ASSERT_THAT(result, SizeIs(2));
 }
+
+// -----------------------------------------------------------------------
+// search by AvgProductionTimeSec and Yield (cover previously uncovered lines)
+// -----------------------------------------------------------------------
+
+TEST_F(SampleControllerTest, SearchByAvgProductionTimeSec_Found) {
+    ctrl_.registerSample("S001", "Silicon A", 30, 0.9f);
+    ctrl_.registerSample("S002", "Chip B",    10, 0.8f);
+
+    // avgProductionTimeSec=30 -> std::to_string(30) == "30"
+    auto result = ctrl_.search(SampleSearchField::AvgProductionTimeSec, "30");
+    ASSERT_THAT(result, SizeIs(1));
+    EXPECT_EQ(result[0].id, "S001");
+}
+
+TEST_F(SampleControllerTest, SearchByAvgProductionTimeSec_NotFound) {
+    ctrl_.registerSample("S001", "Silicon A", 10, 0.9f);
+
+    auto result = ctrl_.search(SampleSearchField::AvgProductionTimeSec, "999");
+    EXPECT_THAT(result, IsEmpty());
+}
+
+TEST_F(SampleControllerTest, SearchByYield_Found) {
+    ctrl_.registerSample("S001", "Silicon A", 10, 0.9f);
+    ctrl_.registerSample("S002", "Chip B",     5, 0.8f);
+
+    // yield=0.9f -> std::to_string gives "0.900000", partial match "0.9"
+    auto result = ctrl_.search(SampleSearchField::Yield, "0.9");
+    // 0.9f -> "0.900000", 0.8f -> "0.800000" => only S001 matches
+    ASSERT_FALSE(result.empty());
+    EXPECT_EQ(result[0].id, "S001");
+}
+
+TEST_F(SampleControllerTest, SearchByYield_NotFound) {
+    ctrl_.registerSample("S001", "Silicon A", 10, 0.9f);
+
+    auto result = ctrl_.search(SampleSearchField::Yield, "0.5");
+    EXPECT_THAT(result, IsEmpty());
+}
