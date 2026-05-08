@@ -54,23 +54,15 @@ void ProductionController::onJobComplete(const ProductionJob& job) {
     if (!sampleOpt.has_value()) return;
 
     Sample sample = *sampleOpt;
-
     int producedQty = static_cast<int>(std::ceil(job.quantity * sample.yield));
-
-    sample.stock += producedQty;
+    sample.stock += producedQty - job.shortfall;
+    if (sample.stock < 0) sample.stock = 0;
     DataStore::instance().updateSample(sample);
 
     auto orderOpt = DataStore::instance().findOrder(job.orderId);
     if (orderOpt.has_value()) {
-        Order order = *orderOpt;
-        auto sampleOpt2 = DataStore::instance().findSample(job.sampleId);
-        if (sampleOpt2.has_value()) {
-            Sample s2 = *sampleOpt2;
-            s2.stock -= job.shortfall;
-            if (s2.stock < 0) s2.stock = 0;
-            DataStore::instance().updateSample(s2);
-        }
-        order.status    = OrderStatus::Confirmed;
+        Order order    = *orderOpt;
+        order.status   = OrderStatus::Confirmed;
         order.updatedAt = std::time(nullptr);
         DataStore::instance().updateOrder(order);
     }
