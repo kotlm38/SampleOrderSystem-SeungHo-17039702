@@ -1,27 +1,37 @@
 {
-    "orders": [],
-    "productionJobs": [],
-    "samples": [
-        {
-            "avgProductionTimeSec": 30,
-            "id": "S001",
-            "name": "Silicon Wafer A",
-            "stock": 15,
-            "yield": 0.92
-        },
-        {
-            "avgProductionTimeSec": 60,
-            "id": "S002",
-            "name": "GaAs Wafer B",
-            "stock": 0,
-            "yield": 0.85
-        },
-        {
-            "avgProductionTimeSec": 45,
-            "id": "S003",
-            "name": "SiC Substrate C",
-            "stock": 3,
-            "yield": 0.78
-        }
-    ]
+  "orders": [
+    {
+      "createdAt": 1778222271,
+      "customer": "TC03-Customer",
+      "orderId": "ORD-1778222271-0",
+      "quantity": 6,
+      "sampleId": "S003",
+      "status": "Reserved",
+      "updatedAt": 1778222271
+    }
+  ],
+  "productionJobs": [],
+  "samples": [
+    {
+      "avgProductionTimeSec": 5,
+      "id": "S001",
+      "name": "Silicon Wafer A",
+      "stock": 15,
+      "yield": 0.9200000166893005
+    },
+    {
+      "avgProductionTimeSec": 3,
+      "id": "S002",
+      "name": "GaAs Wafer B",
+      "stock": 0,
+      "yield": 0.8500000238418579
+    },
+    {
+      "avgProductionTimeSec": 3,
+      "id": "S003",
+      "name": "SiC Substrate C",
+      "stock": 3,
+      "yield": 0.7799999713897705
+    }
+  ]
 }

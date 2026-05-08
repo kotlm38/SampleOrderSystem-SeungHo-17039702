@@ -22,7 +22,7 @@ std::string DataStore::dbFilePath() const {
     std::string exe(buf);
     auto pos = exe.rfind('\\');
     std::string dir = (pos != std::string::npos) ? exe.substr(0, pos) : ".";
-    return dir + "\\..\\DB\\data.json";
+    return dir + "\\..\\..\\DB\\data.json";
 }
 
 static void ensureDbDir(const std::string& filePath) {
