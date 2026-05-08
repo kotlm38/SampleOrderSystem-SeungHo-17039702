@@ -6,8 +6,17 @@
       "orderId": "ORD-1778222271-0",
       "quantity": 6,
       "sampleId": "S003",
-      "status": "Reserved",
-      "updatedAt": 1778222271
+      "status": "Release",
+      "updatedAt": 1778222968
+    },
+    {
+      "createdAt": 1778223279,
+      "customer": "SSH",
+      "orderId": "ORD-1778223279-0",
+      "quantity": 10,
+      "sampleId": "S004",
+      "status": "Confirmed",
+      "updatedAt": 1778223327
     }
   ],
   "productionJobs": [],
@@ -30,8 +39,15 @@
       "avgProductionTimeSec": 3,
       "id": "S003",
       "name": "SiC Substrate C",
-      "stock": 3,
+      "stock": 1,
       "yield": 0.7799999713897705
+    },
+    {
+      "avgProductionTimeSec": 2,
+      "id": "S004",
+      "name": "SS wafer",
+      "stock": 2,
+      "yield": 0.7699999809265137
     }
   ]
 }

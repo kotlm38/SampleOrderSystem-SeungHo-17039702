@@ -5,6 +5,9 @@
 #include <atomic>
 #include <cmath>
 
+// 수율 손실 여유분: 실제 생산량이 공칭 수율보다 낮을 수 있음을 반영
+static constexpr float YIELD_SAFETY_MARGIN = 0.9f;
+
 std::string OrderController::generateOrderId() const {
     static std::atomic<int> s_counter{ 0 };
     return "ORD-" + std::to_string(std::time(nullptr))
@@ -48,7 +51,7 @@ bool OrderController::approveOrder(const std::string& orderId) {
     } else {
         int shortfall  = order.quantity - sample.stock;
         int produceQty = static_cast<int>(std::ceil(
-            static_cast<float>(shortfall) / (sample.yield * 0.9f)));
+            static_cast<float>(shortfall) / (sample.yield * YIELD_SAFETY_MARGIN)));
 
         order.status    = OrderStatus::Producing;
         order.updatedAt = std::time(nullptr);
