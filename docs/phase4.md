@@ -121,9 +121,32 @@ SampleController::registerSample() 호출
 
 #### doSearch()
 ```
-입력: 검색 키워드
-SampleController::searchByName() 호출
-결과 있으면 목록 출력, 없으면 "결과 없음."
+검색 속성 선택 메뉴 출력:
+  1. 시료 ID
+  2. 이름
+  3. 평균 생산시간(초)
+  4. 수율
+선택 → SampleSearchField 결정
+
+입력: 키워드
+SampleController::search(field, keyword) 호출
+결과 있으면 목록 테이블 출력, 없으면 "결과 없음."
+```
+
+콘솔 출력 예시:
+```
+검색 속성 선택:
+  1. 시료 ID
+  2. 이름
+  3. 평균 생산시간(초)
+  4. 수율
+선택: 2
+키워드 입력: GaN
+
+[검색 결과]
+ID          이름                생산시간(초)  수율    재고
+------------------------------------------------------------
+S001        GaN Wafer           10            0.90    50
 ```
 
 ---
@@ -169,24 +192,33 @@ OrderController::createOrder(customer, sampleId, quantity) 호출
 
 #### doReviewOrders()
 ```
-OrderController::getReservedOrders() 호출
-목록 없으면 → "승인 대기 중인 주문이 없습니다."
-목록 있으면 Reserved 주문 테이블 출력:
+while (true):
+    orders = OrderController::getReservedOrders()
 
-[Reserved 주문 목록]
-주문번호                  고객명          시료ID          수량
-------------------------------------------------
-ORD-1715000000-0          삼성전자        S001            5
-...
+    // display update: 매 반복마다 최신 Reserved 목록을 새로 출력
+    if orders.empty():
+        출력: "승인 대기 중인 주문이 없습니다."
+        break
 
-입력: 처리할 주문번호 (취소: 0)
-입력: 1.승인  2.거절
+    [Reserved 주문 목록]
+    주문번호                  고객명          시료ID          수량
+    ------------------------------------------------
+    ORD-1715000000-0          삼성전자        S001            5
+    ...
 
-승인 → approveOrder() → "승인 완료." / "처리 실패."
-거절 → rejectOrder()  → "거절 완료." / "처리 실패."
+    입력: 처리할 주문번호 (취소: 0)
+    if 0 → break
+
+    입력: 1.승인  2.거절
+    승인 → approveOrder() → "승인 완료." / "처리 실패."
+    거절 → rejectOrder()  → "거절 완료." / "처리 실패."
+    // 결과 출력 후 루프 처음으로 돌아가 갱신된 목록 재표시
 ```
 
-**POC 대비 변경:** 목록 테이블에 고객명 컬럼 추가.
+승인/거절 처리 후 별도의 갱신 호출 없이 루프 재진입으로 자동 display update가 이루어진다.  
+Reserved 주문이 없어질 때까지 반복하거나, 사용자가 0을 입력하면 종료한다.
+
+**POC 대비 변경:** 목록 테이블에 고객명 컬럼 추가; 승인/거절 후 목록 자동 갱신(display update) 추가.
 
 ---
 
@@ -309,6 +341,8 @@ ORD-1715000100-0          삼성전자        S001            5
 class ProductionLineView {
 public:
     void show() const;
+private:
+    static std::string formatTime(std::time_t t);
 };
 ```
 
@@ -316,23 +350,66 @@ public:
 
 ```
 --- 생산 라인 ---
-Job ID             주문번호                  시료ID        수량    남은시간(초)
------------------------------------------------------------------------------
-JOB-ORD-1715-0     ORD-1715000000-0          S001          10      45
+[현재 생산 중]
+주문번호                  시료이름            주문량  재고    필요생산량  완료 예정 시간
+---------------------------------------------------------------------------------------
+ORD-1715000000-0          GaN Wafer           5       0       6           14:32:45
+
+[생산 대기 큐] (최대 3개)
+순서  주문번호                  시료이름            주문량  필요생산량  완료 예정 시간
+---------------------------------------------------------------------------------------
+1     ORD-1715001000-0          SiC Substrate       3       4           14:34:15
+2     ORD-1715002000-0          GaN Wafer           2       3           14:35:45
 ```
 
 ### 구현 요점
 
 ```
-jobs = ProductionController::instance().getActiveJobs()
 now = time(nullptr)
-for job in jobs:
-    remaining = max(0, job.durationSec - (now - job.startTime))
-    출력 한 행
+
+// 시료 이름·재고 조회 헬퍼
+sample = SampleController::instance().findSampleById(job.sampleId)
+sampleName = sample ? sample->name : job.sampleId
+stock      = sample ? sample->stock : 0
+
+// 완료 예정 시간 포맷
+formatTime(t):
+    tm = localtime(t)
+    strftime(buf, sizeof(buf), "%H:%M:%S", &tm)
+    return buf
+
+// 현재 생산 중
+activeJobs = ProductionController::instance().getActiveJobs()
+출력: "[현재 생산 중]"
+if activeJobs.empty():
+    출력: "  (없음)"
+else:
+    헤더 출력 (주문번호 / 시료이름 / 주문량 / 재고 / 필요생산량 / 완료 예정 시간)
+    for job in activeJobs:
+        finishTime = job.startTime + job.durationSec
+        출력 한 행: job.orderId / sampleName / job.quantity / stock / job.shortfall / formatTime(finishTime)
+
+// 생산 대기 큐 (최대 3개)
+pendingJobs = ProductionController::instance().getPendingJobs()   // FIFO 순서
+출력: "\n[생산 대기 큐] (최대 3개)"
+if pendingJobs.empty():
+    출력: "  (없음)"
+else:
+    헤더 출력 (순서 / 주문번호 / 시료이름 / 주문량 / 필요생산량 / 완료 예정 시간)
+
+    // 대기 큐의 완료 예정 시간: 앞선 Job 완료 시각을 누적 계산
+    nextStart = activeJobs.empty()
+                    ? now
+                    : activeJobs[0].startTime + activeJobs[0].durationSec
+
+    for i, job in enumerate(pendingJobs[:3]):
+        estimatedFinish = nextStart + job.durationSec
+        nextStart = estimatedFinish
+        출력 한 행: (i+1) / job.orderId / sampleName / job.quantity / job.shortfall / formatTime(estimatedFinish)
 ```
 
 남은 시간이 0인 Job은 다음 workerLoop 사이클에서 완료 처리된다.  
-표시상 0초로 출력하고, 실제 완료는 백그라운드에서 이루어진다.
+대기 큐 완료 예정 시간은 현재 시각 기준 추정값이며, 앞선 Job이 완료될 때마다 재계산된다.
 
 ---
 

@@ -110,13 +110,17 @@ struct ProductionJob {
     std::string  jobId;
     std::string  orderId;
     std::string  sampleId;
-    int          quantity;
-    std::time_t  startTime;
-    int          durationSec;   // avgProductionTimeSec * quantity
+    int          quantity;     // 실제 생산할 수량 = ceil(shortfall / (yield * 0.9))
+    int          shortfall;    // 주문 부족분 = order.quantity - 승인 시 sample.stock
+                               // onJobComplete에서 재고 차감 기준으로 사용
+    std::time_t  startTime;    // 0 = 대기 중(Pending), >0 = 생산 시작 시각
+    int          durationSec;  // avgProductionTimeSec * quantity
 };
 ```
 
-POC와 동일. 변경 없음.
+**POC 대비 변경:**
+- `shortfall` 추가 — 재고 선점(stock=0) 후 onJobComplete에서 실제 차감량 참조
+- `startTime = 0` 을 "대기 중" 마커로 사용 — workerLoop이 처리 시 실제 시각으로 갱신
 
 ---
 
@@ -155,6 +159,7 @@ public:
     // --- ProductionJob ---
     std::vector<ProductionJob> getProductionJobs() const;
     void                       addProductionJob(const ProductionJob& job);
+    void                       updateProductionJob(const ProductionJob& job);  // startTime 갱신(대기→생산 전환)에 사용
     void                       removeProductionJob(const std::string& jobId);
 
 private:
@@ -249,6 +254,7 @@ void DataStore::load() {
         pj.orderId     = job["orderId"];
         pj.sampleId    = job["sampleId"];
         pj.quantity    = job["quantity"].get<int>();
+        pj.shortfall   = job["shortfall"].get<int>();
         pj.startTime   = job["startTime"].get<std::time_t>();
         pj.durationSec = job["durationSec"].get<int>();
         jobs_.push_back(pj);
@@ -257,6 +263,8 @@ void DataStore::load() {
 ```
 
 ### saveUnlocked() 구현
+
+쓰기 도중 프로세스가 종료되어도 기존 파일이 손상되지 않도록 **임시파일 → rename** 방식(atomic write)을 사용한다.
 
 ```cpp
 void DataStore::saveUnlocked() const {
@@ -295,15 +303,27 @@ void DataStore::saveUnlocked() const {
             {"orderId",     pj.orderId},
             {"sampleId",    pj.sampleId},
             {"quantity",    pj.quantity},
+            {"shortfall",   pj.shortfall},
             {"startTime",   pj.startTime},
             {"durationSec", pj.durationSec}
         });
     }
     j["productionJobs"] = jobsArr;
 
-    ensureDbDir(dbFilePath());
-    std::ofstream ofs(dbFilePath());
-    ofs << j.dump(2);   // 들여쓰기 2칸
+    std::string target = dbFilePath();
+    std::string tmp    = target + ".tmp";
+
+    ensureDbDir(target);
+
+    // 1단계: 임시 파일에 쓰기
+    {
+        std::ofstream ofs(tmp);
+        ofs << j.dump(2);   // 들여쓰기 2칸
+    }   // ofs 소멸 시 flush + close 보장
+
+    // 2단계: 임시 파일을 대상 파일로 원자적 교체
+    // MoveFileExA는 같은 볼륨 내에서 atomic rename을 보장한다.
+    MoveFileExA(tmp.c_str(), target.c_str(), MOVEFILE_REPLACE_EXISTING);
 }
 ```
 
@@ -315,6 +335,20 @@ void DataStore::save() {
     saveUnlocked();
 }
 ```
+
+### updateProductionJob 구현
+
+```cpp
+void DataStore::updateProductionJob(const ProductionJob& job) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    for (auto& pj : jobs_) {
+        if (pj.jobId == job.jobId) { pj = job; break; }
+    }
+    saveUnlocked();
+}
+```
+
+`updateOrder` / `updateSample`과 동일한 패턴. jobId로 기존 항목을 찾아 교체 후 즉시 저장.
 
 ### addSample 패턴 (deadlock 방지)
 
