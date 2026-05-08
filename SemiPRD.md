@@ -1,4 +1,4 @@
-## 시스템 구성 요소
+﻿## 시스템 구성 요소
 1. 주문
 - 모든 주문은 5가지 Status(Reserved, Rejected, Producing, Confirmed, Release)중 하나를 보유한다.
 - Reserved : 주문이 입력된 초기 상태.
@@ -7,6 +7,7 @@
 - Release : 시료를 고객에게 전달하고 주문 처리가 완료된 상태.
 2. 시료
 - 시료별로 4가지 속성(ID, 이름, 평균생산시간, 수율)을 가진다.
+- 각 시료는 고유의 ID를 가지고 ID에 해당하는 이름은 하나이다.
 - 시료의 생산 시간은 평균생산시간*개수로 정해진다.
 
 ## Main menu
@@ -30,3 +31,7 @@
 - 2개의 sub menu 출력. 주문량확인/재고량확인.
 1. 주문량확인 : 상태별(Reserved, Producing, Confirmed, Release) 목록을 확인.
 2. 재고량확인 : 각 시료별 현재 재고 수량 확인. 주문대비 수량에 따라 상태도 3가지로(여유, 부족, 고갈) 표시. 고갈은 수량이 0인경우.
+
+## data structure
+- 시료 : ID, 이름, 평균생산시간, 수율, 재고.
+- 주문 : 번호, 고객, 시료, 수량, 상태(Reserved, Producing, Confirmed, Release).

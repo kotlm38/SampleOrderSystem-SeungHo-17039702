@@ -1,0 +1,9 @@
+x64/
+x86/
+Debug/
+Release/
+*.user
+.vs/
+*.VC.db
+*.VC.opendb
+ipch/

@@ -1,0 +1,9 @@
+x64/
+Debug/
+Release/
+*.user
+.vs/
+*.VC.db
+*.VC.opendb
+ipch/
+.mcp.json

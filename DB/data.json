@@ -1,0 +1,245 @@
+{
+    "orders": [
+        {
+            "createdAt": 1746662400,
+            "orderId": "ORD-20260508-001",
+            "quantity": 5,
+            "sampleId": "S001",
+            "status": "Reserved",
+            "updatedAt": 1746662400
+        },
+        {
+            "createdAt": 1746662500,
+            "orderId": "ORD-20260508-002",
+            "quantity": 10,
+            "sampleId": "S002",
+            "status": "Producing",
+            "updatedAt": 1746663000
+        },
+        {
+            "createdAt": 1746662600,
+            "orderId": "ORD-20260508-003",
+            "quantity": 2,
+            "sampleId": "S003",
+            "status": "Confirmed",
+            "updatedAt": 1746664000
+        },
+        {
+            "createdAt": 1746661000,
+            "orderId": "ORD-20260508-004",
+            "quantity": 8,
+            "sampleId": "S001",
+            "status": "Release",
+            "updatedAt": 1746665000
+        },
+        {
+            "createdAt": 1746662700,
+            "orderId": "ORD-20260508-005",
+            "quantity": 4,
+            "sampleId": "S003",
+            "status": "Producing",
+            "updatedAt": 1746663200
+        },
+        {
+            "createdAt": 1778204702,
+            "orderId": "ORD-20260508-006",
+            "quantity": 15,
+            "sampleId": "S001",
+            "status": "Reserved",
+            "updatedAt": 1778205064
+        },
+        {
+            "createdAt": 1778202584,
+            "orderId": "ORD-20260508-007",
+            "quantity": 13,
+            "sampleId": "S001",
+            "status": "Release",
+            "updatedAt": 1778203833
+        },
+        {
+            "createdAt": 1778202073,
+            "orderId": "ORD-20260508-008",
+            "quantity": 17,
+            "sampleId": "S002",
+            "status": "Release",
+            "updatedAt": 1778202398
+        },
+        {
+            "createdAt": 1778204792,
+            "orderId": "ORD-20260508-009",
+            "quantity": 11,
+            "sampleId": "S003",
+            "status": "Producing",
+            "updatedAt": 1778205745
+        },
+        {
+            "createdAt": 1778203118,
+            "orderId": "ORD-20260508-010",
+            "quantity": 13,
+            "sampleId": "S003",
+            "status": "Reserved",
+            "updatedAt": 1778203752
+        },
+        {
+            "createdAt": 1778201645,
+            "orderId": "ORD-20260508-011",
+            "quantity": 17,
+            "sampleId": "S002",
+            "status": "Reserved",
+            "updatedAt": 1778202901
+        },
+        {
+            "createdAt": 1778204818,
+            "orderId": "ORD-20260508-012",
+            "quantity": 4,
+            "sampleId": "S002",
+            "status": "Confirmed",
+            "updatedAt": 1778205673
+        },
+        {
+            "createdAt": 1778202872,
+            "orderId": "ORD-20260508-013",
+            "quantity": 1,
+            "sampleId": "S002",
+            "status": "Producing",
+            "updatedAt": 1778204039
+        },
+        {
+            "createdAt": 1778204016,
+            "orderId": "ORD-20260508-014",
+            "quantity": 7,
+            "sampleId": "S002",
+            "status": "Reserved",
+            "updatedAt": 1778205395
+        },
+        {
+            "createdAt": 1778202028,
+            "orderId": "ORD-20260508-015",
+            "quantity": 15,
+            "sampleId": "S001",
+            "status": "Producing",
+            "updatedAt": 1778202419
+        },
+        {
+            "createdAt": 1778202710,
+            "orderId": "ORD-20260508-016",
+            "quantity": 12,
+            "sampleId": "S002",
+            "status": "Reserved",
+            "updatedAt": 1778203805
+        },
+        {
+            "createdAt": 1778204412,
+            "orderId": "ORD-20260508-017",
+            "quantity": 11,
+            "sampleId": "S002",
+            "status": "Confirmed",
+            "updatedAt": 1778205292
+        },
+        {
+            "createdAt": 1778203415,
+            "orderId": "ORD-20260508-018",
+            "quantity": 13,
+            "sampleId": "S002",
+            "status": "Reserved",
+            "updatedAt": 1778204751
+        },
+        {
+            "createdAt": 1778204376,
+            "orderId": "ORD-20260508-019",
+            "quantity": 15,
+            "sampleId": "S002",
+            "status": "Release",
+            "updatedAt": 1778205194
+        },
+        {
+            "createdAt": 1778203232,
+            "orderId": "ORD-20260508-020",
+            "quantity": 11,
+            "sampleId": "S003",
+            "status": "Release",
+            "updatedAt": 1778204499
+        },
+        {
+            "createdAt": 1778203998,
+            "orderId": "ORD-20260508-021",
+            "quantity": 5,
+            "sampleId": "S003",
+            "status": "Confirmed",
+            "updatedAt": 1778204733
+        },
+        {
+            "createdAt": 1778201613,
+            "orderId": "ORD-20260508-022",
+            "quantity": 7,
+            "sampleId": "S001",
+            "status": "Reserved",
+            "updatedAt": 1778203314
+        },
+        {
+            "createdAt": 1778204316,
+            "orderId": "ORD-20260508-023",
+            "quantity": 13,
+            "sampleId": "S002",
+            "status": "Reserved",
+            "updatedAt": 1778204389
+        },
+        {
+            "createdAt": 1778204414,
+            "orderId": "ORD-20260508-024",
+            "quantity": 9,
+            "sampleId": "S001",
+            "status": "Producing",
+            "updatedAt": 1778205670
+        },
+        {
+            "createdAt": 1778203913,
+            "orderId": "ORD-20260508-025",
+            "quantity": 1,
+            "sampleId": "S001",
+            "status": "Release",
+            "updatedAt": 1778205205
+        }
+    ],
+    "productionJobs": [
+        {
+            "durationSec": 600,
+            "jobId": "JOB-001",
+            "orderId": "ORD-20260508-002",
+            "quantity": 10,
+            "sampleId": "S002",
+            "startTime": 1746663000
+        },
+        {
+            "durationSec": 180,
+            "jobId": "JOB-002",
+            "orderId": "ORD-20260508-005",
+            "quantity": 4,
+            "sampleId": "S003",
+            "startTime": 1746663200
+        }
+    ],
+    "samples": [
+        {
+            "avgProductionTimeSec": 30,
+            "id": "S001",
+            "name": "Silicon Wafer A",
+            "stock": 15,
+            "yield": 0.92
+        },
+        {
+            "avgProductionTimeSec": 60,
+            "id": "S002",
+            "name": "GaAs Wafer B",
+            "stock": 0,
+            "yield": 0.85
+        },
+        {
+            "avgProductionTimeSec": 45,
+            "id": "S003",
+            "name": "SiC Substrate C",
+            "stock": 3,
+            "yield": 0.78
+        }
+    ]
+}
