@@ -123,4 +123,7 @@
       <Filter>헤더 파일\View</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

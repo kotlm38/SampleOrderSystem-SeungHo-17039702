@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Model/ProductionJob.h"
 #include <vector>
 #include <thread>

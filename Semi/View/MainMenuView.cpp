@@ -1,4 +1,4 @@
-#include "MainMenuView.h"
+﻿#include "MainMenuView.h"
 #include "SampleView.h"
 #include "OrderView.h"
 #include "MonitoringView.h"
