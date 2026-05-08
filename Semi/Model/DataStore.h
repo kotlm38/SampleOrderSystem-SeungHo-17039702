@@ -30,6 +30,17 @@ public:
     void                       updateProductionJob(const ProductionJob& job);
     void                       removeProductionJob(const std::string& jobId);
 
+// --- 테스트 전용 헬퍼 (SEMI_TEST 매크로로 활성화) ---
+#ifdef SEMI_TEST
+public:
+    void resetForTest() {
+        std::lock_guard<std::mutex> lock(mutex_);
+        samples_.clear();
+        orders_.clear();
+        jobs_.clear();
+    }
+#endif
+
 private:
     DataStore() = default;
     DataStore(const DataStore&) = delete;

@@ -25,6 +25,9 @@
     <Filter Include="View">
       <UniqueIdentifier>{D4E5F6A7-B8C9-0123-DEF0-234567890123}</UniqueIdentifier>
     </Filter>
+    <Filter Include="테스트파일">
+      <UniqueIdentifier>{E5F6A7B8-C9D0-1234-EF01-345678901234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\json.hpp">
@@ -118,6 +121,24 @@
     </ClCompile>
     <ClCompile Include="View\ProductionLineView.cpp">
       <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_DataStore.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_SampleController.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_OrderController.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_MonitoringController.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_ShippingController.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\test_ProductionController.cpp">
+      <Filter>테스트파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "../Lib/json.hpp"
 #include <fstream>
 #include <algorithm>
+#include <filesystem>
 #include <windows.h>
 #include <cmath>
 
@@ -24,11 +25,13 @@ std::string DataStore::dbFilePath() {
 static void ensureDbDir(const std::string& filePath) {
     auto pos = filePath.rfind('\\');
     if (pos == std::string::npos) return;
-    std::string dir = filePath.substr(0, pos);
-    CreateDirectoryA(dir.c_str(), nullptr);
+    std::filesystem::create_directories(filePath.substr(0, pos));
 }
 
 void DataStore::load() {
+#ifdef SEMI_TEST
+    return;  // 테스트 중에는 파일 로드 생략
+#endif
     std::lock_guard<std::mutex> lock(mutex_);
     std::ifstream ifs(dbFilePath());
     if (!ifs.is_open()) return;
@@ -38,40 +41,43 @@ void DataStore::load() {
 
     for (auto& s : j.value("samples", json::array())) {
         samples_.push_back({
-            s["id"].get<std::string>(),
-            s["name"].get<std::string>(),
-            s["avgProductionTimeSec"].get<int>(),
-            s["yield"].get<float>(),
-            s["stock"].get<int>()
+            s.value("id",                   std::string{}),
+            s.value("name",                 std::string{}),
+            s.value("avgProductionTimeSec", 0),
+            s.value("yield",                0.0f),
+            s.value("stock",                0)
         });
     }
 
     for (auto& o : j.value("orders", json::array())) {
         Order ord;
-        ord.orderId   = o["orderId"].get<std::string>();
-        ord.customer  = o["customer"].get<std::string>();
-        ord.sampleId  = o["sampleId"].get<std::string>();
-        ord.quantity  = o["quantity"].get<int>();
-        ord.status    = orderStatusFromString(o["status"].get<std::string>());
-        ord.createdAt = o["createdAt"].get<std::time_t>();
-        ord.updatedAt = o["updatedAt"].get<std::time_t>();
+        ord.orderId   = o.value("orderId",   std::string{});
+        ord.customer  = o.value("customer",  std::string{});
+        ord.sampleId  = o.value("sampleId",  std::string{});
+        ord.quantity  = o.value("quantity",  0);
+        ord.status    = orderStatusFromString(o.value("status", std::string{"Reserved"}));
+        ord.createdAt = o.value("createdAt", std::time_t{0});
+        ord.updatedAt = o.value("updatedAt", std::time_t{0});
         orders_.push_back(ord);
     }
 
     for (auto& job : j.value("productionJobs", json::array())) {
         ProductionJob pj;
-        pj.jobId       = job["jobId"].get<std::string>();
-        pj.orderId     = job["orderId"].get<std::string>();
-        pj.sampleId    = job["sampleId"].get<std::string>();
-        pj.quantity    = job["quantity"].get<int>();
-        pj.shortfall   = job["shortfall"].get<int>();
-        pj.startTime   = job["startTime"].get<std::time_t>();
-        pj.durationSec = job["durationSec"].get<int>();
+        pj.jobId       = job.value("jobId",       std::string{});
+        pj.orderId     = job.value("orderId",      std::string{});
+        pj.sampleId    = job.value("sampleId",     std::string{});
+        pj.quantity    = job.value("quantity",     0);
+        pj.shortfall   = job.value("shortfall",    0);
+        pj.startTime   = job.value("startTime",    std::time_t{0});
+        pj.durationSec = job.value("durationSec",  0);
         jobs_.push_back(pj);
     }
 }
 
 void DataStore::saveUnlocked() const {
+#ifdef SEMI_TEST
+    return;  // 테스트 중에는 파일 I/O 생략
+#endif
     json j;
 
     json samplesArr = json::array();

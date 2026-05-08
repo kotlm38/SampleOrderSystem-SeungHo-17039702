@@ -6,6 +6,7 @@
   <Project Path="POC_MVC/POC_MVC.vcxproj" Id="8e5f2a31-c7d9-4b6e-a012-3f94d7e8b156" />
   <Project Path="POC_Data/POC_Data.vcxproj" Id="62429422-195d-48a6-910e-337e2a632f05" />
   <Project Path="Semi/Semi.vcxproj" Id="1f0ff908-89d6-49c8-adf2-d5d822727723" />
+  <Project Path="SemiTest/SemiTest.vcxproj" Id="A1B2C3D4-E5F6-7890-ABCD-EF1234567891" />
   <Project Path="POC_Mon/POC_Mon.vcxproj" Id="005eeb0f-a76f-4aea-97e0-2925d412f225" />
   <Project Path="POC_Dummy/POC_Dummy.vcxproj" Id="bd1ef131-4eb6-4dff-bd40-e962c0d7997e" />
 </Solution>

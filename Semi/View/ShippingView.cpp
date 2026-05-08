@@ -4,10 +4,10 @@
 #include <iomanip>
 
 void ShippingView::show() {
-    printConfirmedOrders();
-
     ShippingController ctrl;
     auto confirmed = ctrl.getConfirmedOrders();
+
+    printConfirmedOrders(confirmed);
     if (confirmed.empty()) return;
 
     std::cout << "\n출고할 주문번호 (취소: 0): ";
@@ -20,10 +20,7 @@ void ShippingView::show() {
         : std::cout << "처리 실패 (Confirmed 상태가 아니거나 존재하지 않는 주문).\n";
 }
 
-void ShippingView::printConfirmedOrders() const {
-    ShippingController ctrl;
-    auto confirmed = ctrl.getConfirmedOrders();
-
+void ShippingView::printConfirmedOrders(const std::vector<Order>& confirmed) const {
     std::cout << "\n--- 출고 처리 ---\n";
     if (confirmed.empty()) { std::cout << "출고 가능한 주문이 없습니다.\n"; return; }
 
