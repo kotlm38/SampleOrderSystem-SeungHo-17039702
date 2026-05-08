@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="소스 파일">
@@ -13,5 +13,114 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{B2C3D4E5-F6A7-8901-BCDE-F12345678901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{C3D4E5F6-A7B8-9012-CDEF-123456789012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{D4E5F6A7-B8C9-0123-DEF0-234567890123}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lib\json.hpp">
+      <Filter>Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Sample.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Order.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ProductionJob.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\DataStore.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\SampleController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\OrderController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ProductionController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\MonitoringController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ShippingController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="View\MainMenuView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\SampleView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\OrderView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\MonitoringView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\ShippingView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="View\ProductionLineView.h">
+      <Filter>View</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Order.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\DataStore.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\SampleController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\OrderController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ProductionController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\MonitoringController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ShippingController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="View\MainMenuView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\SampleView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\OrderView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\MonitoringView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\ShippingView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="View\ProductionLineView.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
